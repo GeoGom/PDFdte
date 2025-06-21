@@ -1,120 +1,15 @@
 <?php
 include 'config.php';
 include 'nletras.php';
-//$conexion = mysqli_connect($host, $user, $pass, $db, $port);
+$conexion = mysqli_connect($host, $user, $pass, $db, $port);
 
+//$codGeneracionPost = $_POST['Cod'];
+$codGeneracionPost = '750DB3B3-4E0C-11F0-8758-F23C91ADD57D';
 
-
-$json = '{
- 		  "identificacion": {
- 		    "version": 1,
- 		    "ambiente": "01",
- 		    "tipoDte": "01",
- 		    "numeroControl": "DTE-01-S001P002-000000000003733",
- 		    "codigoGeneracion": "2115B283-4E18-11F0-8758-F23C91ADD57D",
- 		    "tipoModelo": 1,
- 		    "tipoOperacion": 1,
- 		    "tipoContingencia": null,
- 		    "motivoContin": null,
- 		    "fecEmi": "2025-06-20",
- 		    "horEmi": "14:50:01",
- 		    "tipoMoneda": "USD"
- 		  },
- 		  "documentoRelacionado": null,
- 		  "otrosDocumentos": null,
- 		  "emisor": {
- 		    "nit": "12181706851011",
- 		    "nrc": "1989850",
- 		    "nombre": "AGROFERRETERIA EL AMIGO SUC-1",
- 		    "codActividad": "46632",
- 		    "descActividad": "Venta al por mayor de artículos de ferretería y pinturerías",
- 		    "nombreComercial": "AGROFERRETERIA EL AMIGO SUC-1",
- 		    "tipoEstablecimiento": "01",
- 		    "direccion": {
- 		      "departamento": "11",
- 		      "municipio": "23",
- 		      "complemento": "COLONIA EL PARAISO, PUERTO PARADA, USULUTAN, USULUTAN"
- 		    },
- 		    "telefono": "26321308",
- 		    "correo": "oficinalisz@gmail.com",
- 		    "codEstableMH": null,
- 		    "codEstable": null,
- 		    "codPuntoVentaMH": null,
- 		    "codPuntoVenta": null
- 		  },
- 		  "receptor": {
- 			"tipoDocumento": null,
- 		    "numDocumento":	null,
- 		    "nrc": null,
- 		    "nombre": "CLIENTES VARIOS",
- 		    "codActividad": null,
- 		    "descActividad": null,
- 		    "direccion": null,
- 		    "telefono": "72613347",
- 		    "correo": null
- 		  },
- 		  "ventaTercero": null,
- 		  "cuerpoDocumento": [
- 						{
- 			  "numeroDocumento": null,
- 			  "numItem": 1,
- 			  "tipoItem": 3,
- 			  "cantidad": 1.00,
- 			  "codigo": "0346",
- 			  "uniMedida": 59,
- 			  "descripcion": "CLAVO DE 1",
- 			  "precioUni": 1.25000000,
- 			  "montoDescu": 0.00000000,
- 			  "ventaNoSuj": 0.0,
- 			  "ventaExenta": 0.00000000,
- 			  "ventaGravada": 1.25000000,
- 			  "noGravado": 0.0,
- 			  "codTributo": null,
- 			  "tributos": null,
- 			  "ivaItem": 0.14380531,
- 			  "psv": 0.0
- 			}
- 		  ],
- 		  "resumen": {
- 		    "totalNoSuj": 0.00,
- 		    "totalExenta": 0.00,
- 		    "totalGravada": 1.25,
- 		    "subTotalVentas": 1.25,
- 		    "descuNoSuj": 0.00,
- 		    "descuExenta": 0.00,
- 		    "descuGravada": 0.00,
- 		    "porcentajeDescuento": 0.00,
- 		    "totalDescu": 0.00,
- 		    "tributos": null,
- 			"totalIva": 0.14,
- 		    "subTotal": 1.25,
- 		    "ivaRete1": 0.00,
- 		    "reteRenta": 0.00,
- 		    "montoTotalOperacion": 1.25,
- 		    "totalNoGravado": 0.0,
- 		    "totalPagar": 1.25,
- 		    "totalLetras": "UNO CON 25/100 USD",
- 		    "saldoFavor": 0.0,
- 		    "condicionOperacion": 1,
- 		    "pagos": null,
- 		    "numPagoElectronico": null
- 		  },
- 		  "extension": {
- 		    "nombEntrega": null,
- 		    "docuEntrega": null,
- 		    "nombRecibe": null,
- 		    "docuRecibe": null,
- 		    "observaciones": null,
- 		    "placaVehiculo": null
- 		  },
- 		  "apendice": null
- 		,
-"estado": "PROCESADO",
-"selloRecibido": "20253A7B4304A2964D85A6572E694ECF6D11IFCC",
-"fhProcesamiento": "20/06/2025 14:50:02",
-"observaciones": ,
-"firma": "eyJhbGciOiJSUzUxMiJ9.ewogICJpZGVudGlmaWNhY2lvbiIgOiB7CiAgICAidmVyc2lvbiIgOiAxLAogICAgImFtYmllbnRlIiA6ICIwMSIsCiAgICAidGlwb0R0ZSIgOiAiMDEiLAogICAgIm51bWVyb0NvbnRyb2wiIDogIkRURS0wMS1TMDAxUDAwMi0wMDAwMDAwMDAwMDM3MzMiLAogICAgImNvZGlnb0dlbmVyYWNpb24iIDogIjIxMTVCMjgzLTRFMTgtMTFGMC04NzU4LUYyM0M5MUFERDU3RCIsCiAgICAidGlwb01vZGVsbyIgOiAxLAogICAgInRpcG9PcGVyYWNpb24iIDogMSwKICAgICJ0aXBvQ29udGluZ2VuY2lhIiA6IG51bGwsCiAgICAibW90aXZvQ29udGluIiA6IG51bGwsCiAgICAiZmVjRW1pIiA6ICIyMDI1LTA2LTIwIiwKICAgICJob3JFbWkiIDogIjE0OjUwOjAxIiwKICAgICJ0aXBvTW9uZWRhIiA6ICJVU0QiCiAgfSwKICAiZG9jdW1lbnRvUmVsYWNpb25hZG8iIDogbnVsbCwKICAib3Ryb3NEb2N1bWVudG9zIiA6IG51bGwsCiAgImVtaXNvciIgOiB7CiAgICAibml0IiA6ICIxMjE4MTcwNjg1MTAxMSIsCiAgICAibnJjIiA6ICIxOTg5ODUwIiwKICAgICJub21icmUiIDogIkFHUk9GRVJSRVRFUklBIEVMIEFNSUdPIFNVQy0xIiwKICAgICJjb2RBY3RpdmlkYWQiIDogIjQ2NjMyIiwKICAgICJkZXNjQWN0aXZpZGFkIiA6ICJWZW50YSBhbCBwb3IgbWF5b3IgZGUgYXJ0w61jdWxvcyBkZSBmZXJyZXRlcsOtYSB5IHBpbnR1cmVyw61hcyIsCiAgICAibm9tYnJlQ29tZXJjaWFsIiA6ICJBR1JPRkVSUkVURVJJQSBFTCBBTUlHTyBTVUMtMSIsCiAgICAidGlwb0VzdGFibGVjaW1pZW50byIgOiAiMDEiLAogICAgImRpcmVjY2lvbiIgOiB7CiAgICAgICJkZXBhcnRhbWVudG8iIDogIjExIiwKICAgICAgIm11bmljaXBpbyIgOiAiMjMiLAogICAgICAiY29tcGxlbWVudG8iIDogIkNPTE9OSUEgRUwgUEFSQUlTTywgUFVFUlRPIFBBUkFEQSwgVVNVTFVUQU4sIFVTVUxVVEFOIgogICAgfSwKICAgICJ0ZWxlZm9ubyIgOiAiMjYzMjEzMDgiLAogICAgImNvcnJlbyIgOiAib2ZpY2luYWxpc3pAZ21haWwuY29tIiwKICAgICJjb2RFc3RhYmxlTUgiIDogbnVsbCwKICAgICJjb2RFc3RhYmxlIiA6IG51bGwsCiAgICAiY29kUHVudG9WZW50YU1IIiA6IG51bGwsCiAgICAiY29kUHVudG9WZW50YSIgOiBudWxsCiAgfSwKICAicmVjZXB0b3IiIDogewogICAgInRpcG9Eb2N1bWVudG8iIDogbnVsbCwKICAgICJudW1Eb2N1bWVudG8iIDogbnVsbCwKICAgICJucmMiIDogbnVsbCwKICAgICJub21icmUiIDogIkNMSUVOVEVTIFZBUklPUyIsCiAgICAiY29kQWN0aXZpZGFkIiA6IG51bGwsCiAgICAiZGVzY0FjdGl2aWRhZCIgOiBudWxsLAogICAgImRpcmVjY2lvbiIgOiBudWxsLAogICAgInRlbGVmb25vIiA6ICI3MjYxMzM0NyIsCiAgICAiY29ycmVvIiA6IG51bGwKICB9LAogICJ2ZW50YVRlcmNlcm8iIDogbnVsbCwKICAiY3VlcnBvRG9jdW1lbnRvIiA6IFsgewogICAgIm51bWVyb0RvY3VtZW50byIgOiBudWxsLAogICAgIm51bUl0ZW0iIDogMSwKICAgICJ0aXBvSXRlbSIgOiAzLAogICAgImNhbnRpZGFkIiA6IDEuMCwKICAgICJjb2RpZ28iIDogIjAzNDYiLAogICAgInVuaU1lZGlkYSIgOiA1OSwKICAgICJkZXNjcmlwY2lvbiIgOiAiQ0xBVk8gREUgMSIsCiAgICAicHJlY2lvVW5pIiA6IDEuMjUsCiAgICAibW9udG9EZXNjdSIgOiAwLjAsCiAgICAidmVudGFOb1N1aiIgOiAwLjAsCiAgICAidmVudGFFeGVudGEiIDogMC4wLAogICAgInZlbnRhR3JhdmFkYSIgOiAxLjI1LAogICAgIm5vR3JhdmFkbyIgOiAwLjAsCiAgICAiY29kVHJpYnV0byIgOiBudWxsLAogICAgInRyaWJ1dG9zIiA6IG51bGwsCiAgICAiaXZhSXRlbSIgOiAwLjE0MzgwNTMxLAogICAgInBzdiIgOiAwLjAKICB9IF0sCiAgInJlc3VtZW4iIDogewogICAgInRvdGFsTm9TdWoiIDogMC4wLAogICAgInRvdGFsRXhlbnRhIiA6IDAuMCwKICAgICJ0b3RhbEdyYXZhZGEiIDogMS4yNSwKICAgICJzdWJUb3RhbFZlbnRhcyIgOiAxLjI1LAogICAgImRlc2N1Tm9TdWoiIDogMC4wLAogICAgImRlc2N1RXhlbnRhIiA6IDAuMCwKICAgICJkZXNjdUdyYXZhZGEiIDogMC4wLAogICAgInBvcmNlbnRhamVEZXNjdWVudG8iIDogMC4wLAogICAgInRvdGFsRGVzY3UiIDogMC4wLAogICAgInRyaWJ1dG9zIiA6IG51bGwsCiAgICAidG90YWxJdmEiIDogMC4xNCwKICAgICJzdWJUb3RhbCIgOiAxLjI1LAogICAgIml2YVJldGUxIiA6IDAuMCwKICAgICJyZXRlUmVudGEiIDogMC4wLAogICAgIm1vbnRvVG90YWxPcGVyYWNpb24iIDogMS4yNSwKICAgICJ0b3RhbE5vR3JhdmFkbyIgOiAwLjAsCiAgICAidG90YWxQYWdhciIgOiAxLjI1LAogICAgInRvdGFsTGV0cmFzIiA6ICJVTk8gQ09OIDI1LzEwMCBVU0QiLAogICAgInNhbGRvRmF2b3IiIDogMC4wLAogICAgImNvbmRpY2lvbk9wZXJhY2lvbiIgOiAxLAogICAgInBhZ29zIiA6IG51bGwsCiAgICAibnVtUGFnb0VsZWN0cm9uaWNvIiA6IG51bGwKICB9LAogICJleHRlbnNpb24iIDogewogICAgIm5vbWJFbnRyZWdhIiA6IG51bGwsCiAgICAiZG9jdUVudHJlZ2EiIDogbnVsbCwKICAgICJub21iUmVjaWJlIiA6IG51bGwsCiAgICAiZG9jdVJlY2liZSIgOiBudWxsLAogICAgIm9ic2VydmFjaW9uZXMiIDogbnVsbCwKICAgICJwbGFjYVZlaGljdWxvIiA6IG51bGwKICB9LAogICJhcGVuZGljZSIgOiBudWxsCn0.RSe0rz1Mwqj9yQ9hxctbEJeDclzOrpJADNnBWAzdaspM0Wzt589HPI7Ovr4RlieePmka5tt4Q36Moh5dT92cXBVQgbTVhMCmAHGLvN9X6KRoexI1mkJQsEMMnKwkpEQbJsyymiIG1kGinJz_EsODvn-jhtK8dNtITyUymh6cMfBqM-wzR5Ya3Hcovi_sylOyK7nUxSkqYRiaxPFPwrs0Y9sWOziZQ7VlANpAYtq0IDwsCcCdnAFjhW6frNo2Kyfy2YMqSBdnVGj15-rEqoLJnbrWlcJQcENCzTlTuafQxcqZYfZval2TXJ6m5wgn7zfuRwDHpq5SaatuIawD15t04A"
-}'; 
+$sql = "SELECT js_data_tx as JsonData FROM cs_json_data WHERE dt_codigo_generacion = '$codGeneracionPost'";
+$query = mysqli_query($conexion, $sql);
+$json_row = mysqli_fetch_assoc($query);
+$json = $json_row['JsonData']; 
 
 $json = preg_replace('/"observaciones"\s*:\s*,/', '"observaciones": null,', $json);
 $data = json_decode($json, true);
@@ -192,7 +87,9 @@ $nrcReceptor       = $data['receptor']['nrc'];
 $nombreReceptor    = $data['receptor']['nombre'];
 $codActividadReceptor = $data['receptor']['codActividad'];
 $descActividadReceptor = $data['receptor']['descActividad'];
-$direccionReceptor = $data['receptor']['direccion'];
+//$direccionReceptor = $data['receptor']['direccion']; er un array
+$direccionArray = $data['receptor']['direccion'];
+$direccionReceptor = implode(', ', $direccionArray);
 $telefonoReceptor  = $data['receptor']['telefono'];
 $correoReceptor    = $data['receptor']['correo'];
 
@@ -240,7 +137,7 @@ $pdf->Rect(90, 10, 112, 45, 'D', array(), array(0,0,0));
 
 $pdf->SetXY(90, 12); //posicion de la celda
 $pdf->SetFont('helvetica', 'B', $titulo1); //formato de la celda
-$pdf->Cell(0, 3, $tipoDte , 0, 1, 'C');//contenido de la celda
+$pdf->Cell(0, 3, 'FACTURA DE CONSUMIDOR FINAL' , 0, 1, 'C');//contenido de la celda
 
 $x_documento = 92;
 $x_documento2 = 120;
@@ -331,7 +228,7 @@ $y_emisor_desplasamiento = 4;
 
 $pdf->SetXY($x_emisor, $y_emisor); //posicion de la celda
 $pdf->SetFont('helvetica', 'B', $texto); //formato de la celda
-$pdf->Cell(0, 3, $nombre , 0, 1, 'L');//contenido de la celda
+$pdf->Cell(0, 3, $nombreComercial , 0, 1, 'L');//contenido de la celda
 $y_emisor = $y_emisor + $y_emisor_desplasamiento;
 
 $pdf->SetXY($x_emisor, $y_emisor); //posicion de la celda
@@ -772,48 +669,41 @@ foreach ($cuerpoDocumento as $rowP) {
 
     $pdf->SetXY( 7, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, $item , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, $numItem , 0, 1, 'L');//contenido de la celda
 
     $pdf->SetXY( 12, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, '0000' , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, $codigo , 0, 1, 'L');//contenido de la celda
 
     $pdf->SetXY( 33, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, 'med' , 0, 1, 'L');//contenido de la celda
-
-
-    if (1 == 2){
-        $cantidad_vendida = 1 / 2;
-    }else{
-        $cantidad_vendida = 1;
-    }
+    $pdf->Cell(0, 3, $uniMedida  , 0, 1, 'L');//contenido de la celda
 
     $pdf->SetXY( 118, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, $cantidad_vendida , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, $cantidad , 0, 1, 'L');//contenido de la celda
 
     $pdf->SetXY( 132, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, '0.00' , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, number_format($precioUni,4,'.',',') , 0, 1, 'L');//contenido de la celda
 
     $pdf->SetXY( 144, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, '0.00' , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, number_format($montoDescu,4,'.',',') , 0, 1, 'L');//contenido de la celda
 
     $pdf->SetXY( 160, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, $no_sujetas , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, number_format($ventaNoSuj,4,'.',',') , 0, 1, 'L');//contenido de la celda
 
-    $pdf->SetXY( 170, $y_detalle); //posicion de la celda
+    $pdf->SetXY( 176, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, $exentas , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, number_format($ventaExenta,4,'.',',') , 0, 1, 'L');//contenido de la celda
 
     $pdf->SetXY( 190, $y_detalle); //posicion de la celda
     $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-    $pdf->Cell(0, 3, $gravada , 0, 1, 'L');//contenido de la celda
+    $pdf->Cell(0, 3, number_format($ventaGravada,2,'.',',') , 0, 1, 'L');//contenido de la celda
 
-    $producto_cadena = 'AQUI EL NOMBRE DEL PRODUCTO ';
+    $producto_cadena = $descripcion;
 
     $productos_parts = Salto_linea(60,$producto_cadena);
     
@@ -826,7 +716,7 @@ foreach ($cuerpoDocumento as $rowP) {
 
 
 
-    $item = $item + 1;
+
     $descuento_total = $descuento_total + 0.00;
     $SUMA = $SUMA + $gravada;
     $suma_exentas = $suma_exentas + $exentas;
