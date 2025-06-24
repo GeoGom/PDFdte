@@ -1056,7 +1056,7 @@ $descuExenta = $resumen['descuExenta'];          // Descuento en ventas exentas
 $descuGravada = $resumen['descuGravada'];        // Descuento en ventas gravadas
 $porcentajeDescuento = $resumen['porcentajeDescuento'];  // % global de descuento aplicado
 $totalDescu = $resumen['totalDescu'];            // Total general de descuentos
-$tributos = $resumen['tributos'];                // Información de otros tributos (puede ser null)
+
 $totalIva = $resumen['totalIva'];                // IVA total calculado
 $subTotal = $resumen['subTotal'];                // Subtotal después de descuentos
 $ivaRete1 = $resumen['ivaRete1'];                // IVA retenido (si aplica)
@@ -1127,6 +1127,25 @@ $pdf->SetFont('helvetica', '', $titulo1); //formato de la celda
 $pdf->Cell(0, 3, "Observaciones: " . $observaciones , 0, 1, 'L');//contenido de la celda
 */
 
+if (!is_null($resumen['tributos'])) {
+		$tributos = $resumen['tributos'];
+	foreach ($tributos as $index => $tributo) {
+
+		$tributo_codigo = $tributo['codigo'];
+		$tributos_descrip = $tributo['descripcion'];
+		$tributos_val = $tributo['valor'];
+
+		$pdf->SetXY( 148, $y_detalle); //posicion de la celda
+		$pdf->SetFont('helvetica', '', $texto); //formato de la celda
+		$pdf->Cell(0, 3, $tributos_descrip , 0, 1, 'L');//contenido de la celda
+
+		$pdf->SetXY( 187, $y_detalle); //posicion de la celda
+		$pdf->SetFont('helvetica', '', $texto); //formato de la celda
+		$pdf->Cell(0, 3, $tributos_val , 0, 1, 'L');//contenido de la celda
+		$y_detalle = $y_detalle + $y_detale_incremento;
+
+	}
+}
 $pdf->SetXY( 148, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3,"IVA Retenido: " , 0, 1, 'L');//contenido de la celda
@@ -1160,7 +1179,7 @@ $pdf->Cell(0, 3,"TOTAL: " , 0, 1, 'L');//contenido de la celda
 
 $pdf->SetXY( 187, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-$pdf->Cell(0, 3, $totalPagar , 0, 1, 'L');//contenido de la celda
+$pdf->Cell(0, 3, number_format($totalPagar,2,'.',',') , 0, 1, 'L');//contenido de la celda
 $y_detalle = $y_detalle + $y_detale_incremento;
 
 $pdf->SetXY( 148, $y_detalle); //posicion de la celda
