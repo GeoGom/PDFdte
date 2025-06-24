@@ -1146,15 +1146,8 @@ if (!is_null($resumen['tributos'])) {
 
 	}
 }
-$pdf->SetXY( 148, $y_detalle); //posicion de la celda
-$pdf->SetFont('helvetica', '', $texto); //formato de la celda
-$pdf->Cell(0, 3,"IVA Retenido: " , 0, 1, 'L');//contenido de la celda
 
-$pdf->SetXY( 187, $y_detalle); //posicion de la celda
-$pdf->SetFont('helvetica', '', $texto); //formato de la celda
-$pdf->Cell(0, 3, $ivaRete1 , 0, 1, 'L');//contenido de la celda
-$y_detalle = $y_detalle + $y_detale_incremento;
-
+if($totalExenta > 0){
 $pdf->SetXY( 148, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3,"Total Excentas: " , 0, 1, 'L');//contenido de la celda
@@ -1163,7 +1156,8 @@ $pdf->SetXY( 187, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3, $totalExenta , 0, 1, 'L');//contenido de la celda
 $y_detalle = $y_detalle + $y_detale_incremento;
-
+}
+if($totalNoSuj > 0){
 $pdf->SetXY( 148, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3,"Total No Sujetas: " , 0, 1, 'L');//contenido de la celda
@@ -1172,6 +1166,7 @@ $pdf->SetXY( 187, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3, $totalNoSuj , 0, 1, 'L');//contenido de la celda
 $y_detalle = $y_detalle + $y_detale_incremento;
+}
 
 $pdf->SetXY( 148, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
