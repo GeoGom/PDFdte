@@ -1,10 +1,10 @@
 <?php
-include 'config.php';
-include 'nletras.php';
+include 'phpFunctions.php';
 
 
-
-//$json = $_POST['']; 
+//$json = $_POST['']; recibe el json 
+//$print = $_POST['']; recibe el modo en que se debe mostrar 1 (vista en panatalla)  2 (descarga)
+$print = 1;
 $json = '		{
  		  "identificacion": {
  		    "version": 3,
@@ -1053,17 +1053,11 @@ $pdf->Cell(0, 3, $condicionOperacion , 0, 1, 'L');//contenido de la celda
 
 
 
-
-
-
-
-
-
-
-
-
 $example = $codigoGeneracion.".pdf";
 
-//mysqli_close($conexion);
-$pdf->Output($example, 'I');
+if($print == '1'){
+    $pdf->Output($example, 'I');
+}else{
+    $pdf->Output($example, 'D');
+}
 ?>
