@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 include 'nletras.php';
-$conexion = mysqli_connect($host, $user, $pass, $db, $port);
+
 
 
 //$json = $_POST['']; 
@@ -204,6 +204,7 @@ $nrcReceptor       = $data['receptor']['nrc'];
 $nombreReceptor    = $data['receptor']['nombre'];
 $codActividadReceptor = $data['receptor']['codActividad'];
 $descActividadReceptor = $data['receptor']['descActividad'];
+$direccion_recept_complemento       = $data['receptor']['direccion']['complemento'];
 //$direccionReceptor = $data['receptor']['direccion']; er un array
 $direccionArray = $data['receptor']['direccion'];
 $direccionReceptor = implode(', ', $direccionArray);
@@ -338,10 +339,30 @@ $pdf->Cell(0, 3, $tipoDte , 0, 1, 'L');//contenido de la celda
 
 
 // Establecer la posición de la imagen
-$pdf->SetXY(5, 5);
+$pdf->SetXY(8, 5);
 // Insertar la imagen
-$imagen = "img/logo2.png"; // Ruta a tu imagen
-$pdf->Image($imagen, '', '', 85, 25, '', '', 'T', false, 300, '', false, false, 0, false, false, false);
+$imagen = "img/img.png"; // Ruta de la imagen
+$anchoMax = 85; // Ancho máximo permitido
+$altoMax = 21; // Alto máximo permitido
+
+// Insertar imagen ajustada proporcionalmente al cuadro
+$pdf->Image(
+    $imagen,
+    '', '', // Posición X, Y (déjalos automáticos)
+    $anchoMax,
+    $altoMax,
+    '', // Tipo de imagen
+    '', // Link
+    '', // Align
+    false, // Resize (no estira la imagen a la fuerza)
+    300, // DPI
+    '', // Alt
+    false, // isMask
+    false, // imgMask
+    0, // Border
+    'L', // Fit box alignment (Left top corner)
+    true // Fit box (mantiene proporción dentro del ancho/alto)
+);
 
 $x_emisor = 7;
 $x_emisor2 = 40;
@@ -350,7 +371,7 @@ $y_emisor_desplasamiento = 4;
 
 $pdf->SetXY($x_emisor, $y_emisor); //posicion de la celda
 $pdf->SetFont('helvetica', 'B', $texto); //formato de la celda
-$pdf->Cell(0, 3, $nombreComercial , 0, 1, 'L');//contenido de la celda
+$pdf->Cell(0, 3, $nombre , 0, 1, 'L');//contenido de la celda
 $y_emisor = $y_emisor + $y_emisor_desplasamiento;
 
 $pdf->SetXY($x_emisor, $y_emisor); //posicion de la celda
@@ -407,7 +428,7 @@ $y_cliente = $y_cliente + $y_cliente_desplasamiento;
 
 $pdf->SetXY($x_cliente, $y_cliente); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
-$pdf->Cell(0, 3, "Direccion: ". $direccionReceptor , 0, 1, 'L');//contenido de la celda
+$pdf->Cell(0, 3, "Direccion: ". $direccion_recept_complemento  , 0, 1, 'L');//contenido de la celda
 $y_cliente = $y_cliente + $y_cliente_desplasamiento;
 
 $pdf->SetXY($x_cliente, $y_cliente); //posicion de la celda
@@ -624,10 +645,27 @@ foreach ($cuerpoDocumento as $rowP) {
 
 
       // Establecer la posición de la imagen
-      $pdf->SetXY(5, 5);
-      // Insertar la imagen
-      $imagen = "img/logo2.png"; // Ruta a tu imagen
-      $pdf->Image($imagen, '', '', 85, 25, '', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $pdf->SetXY(8, 5);
+        // Insertar la imagen
+
+        // Insertar imagen ajustada proporcionalmente al cuadro
+        $pdf->Image(
+            $imagen,
+            '', '', // Posición X, Y (déjalos automáticos)
+            $anchoMax,
+            $altoMax,
+            '', // Tipo de imagen
+            '', // Link
+            '', // Align
+            false, // Resize (no estira la imagen a la fuerza)
+            300, // DPI
+            '', // Alt
+            false, // isMask
+            false, // imgMask
+            0, // Border
+            'L', // Fit box alignment (Left top corner)
+            true // Fit box (mantiene proporción dentro del ancho/alto)
+        );
 
       $x_emisor = 7;
       $x_emisor2 = 40;
@@ -860,7 +898,9 @@ $condicionOperacion = $resumen['condicionOperacion']; // Condición de operació
 $pagos = $resumen['pagos'];                      // Detalles de pagos (puede ser null)
 $numPagoElectronico = $resumen['numPagoElectronico']; // Número de pago electrónico (si aplica)
 
-
+$nombEntrega = $data['extension']['nombEntrega'];
+$nombRecibe = $data['extension']['nombRecibe'];
+$observaciones_extension = $data['extension']['observaciones'];
 
 $y_detalle = $max_y - 60;
 // Imprimir una línea divisoria
@@ -885,11 +925,13 @@ $pdf->Cell(0, 3, $subTotalVentas , 0, 1, 'L');//contenido de la celda
 
 
 $pdf->SetXY( 7, $y_detalle); //posicion de la celda
-$pdf->SetFont('helvetica', '', $titulo1); //formato de la celda
+$pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3, "SON: " . $totalLetras , 0, 1, 'L');//contenido de la celda
 $y_detalle = $y_detalle + $y_detale_incremento;
 
-
+$pdf->SetXY( 7, $y_detalle); //posicion de la celda
+$pdf->SetFont('helvetica', '', $texto); //formato de la celda
+$pdf->Cell(0, 3, "Entrega: " . $nombEntrega , 0, 1, 'L');//contenido de la celda
 
 $pdf->SetXY( 148, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
@@ -899,6 +941,10 @@ $pdf->SetXY( 187, $y_detalle); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3, $totalDescu , 0, 1, 'L');//contenido de la celda
 $y_detalle = $y_detalle + $y_detale_incremento;
+
+$pdf->SetXY( 7, $y_detalle); //posicion de la celda
+$pdf->SetFont('helvetica', '', $texto); //formato de la celda
+$pdf->Cell(0, 3, "Recibe: " . $nombRecibe , 0, 1, 'L');//contenido de la celda
 
 
 $pdf->SetXY( 148, $y_detalle); //posicion de la celda
@@ -910,13 +956,11 @@ $pdf->SetFont('helvetica', '', $texto); //formato de la celda
 $pdf->Cell(0, 3, $subTotal , 0, 1, 'L');//contenido de la celda
 $y_detalle = $y_detalle + $y_detale_incremento;
 
-/*
-$observaciones = "";
 
 $pdf->SetXY( 7, $y_detalle); //posicion de la celda
-$pdf->SetFont('helvetica', '', $titulo1); //formato de la celda
-$pdf->Cell(0, 3, "Observaciones: " . $observaciones , 0, 1, 'L');//contenido de la celda
-*/
+$pdf->SetFont('helvetica', '', $texto); //formato de la celda
+$pdf->Cell(0, 3, "Observaciones: " . $observaciones_extension , 0, 1, 'L');//contenido de la celda
+
 
 
 if (!is_null($resumen['tributos'])) {

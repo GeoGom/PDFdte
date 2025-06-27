@@ -1,9 +1,4 @@
 <?php
-    $host = "elamigo.csistemas.net";
-    $port = 3306;
-    $user = "dbu_elamigo";
-    $pass = "12345678";
-    $db = "dbf_elamigo";
 
     function Salto_linea ($max_length, $text) {
 
