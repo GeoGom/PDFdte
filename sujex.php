@@ -9,9 +9,16 @@ $dataJsonPost = json_decode(file_get_contents("php://input"), true);
 
 include 'phpFunctions.php';
 
+require_once __DIR__ . '/PHPMailer-Master/src/PHPMailer.php';
+require_once __DIR__ . '/PHPMailer-Master/src/SMTP.php';
+require_once __DIR__ . '/PHPMailer-Master/src/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 //$json = $dataJsonPost[""]; recibe el json 
 //$print = $dataJsonPost[""]; recibe el modo en que se debe mostrar 1 (vista en panatalla)  2 (descarga)
-$print = 1;
+$print = 3;
 $json = '				{
 				  "identificacion": {
 				    "version": 1,
@@ -920,11 +927,70 @@ $y_detalleL = $y_detalleL + $y_detale_incremento;
 
 
 $example = $codigoGeneracion.".pdf";
+$nombreJSON = $codigoGeneracion.".json";
 
 if($print == '1'){
     $pdf->Output($example, 'I');
-}else{
+}else if($print == '2'){
     $pdf->Output($example, 'D');
+}elseif($print == '3'){
+
+    $rutaJSON = __DIR__ . '/' . $nombreJSON;
+    file_put_contents($rutaJSON, $json);
+
+    $rutaPDF = __DIR__ . '/' . $example;
+    $pdf->Output($rutaPDF, 'F'); // 'F' = File en el servidor
+
+    // 5. Enviar correo
+    $mail = new PHPMailer(true);
+
+    try {
+        // Configuración del servidor SMTP personalizado
+        $mail->isSMTP();
+        $mail->Host       = 'csmx1.csistemas.net';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'jarris28@csistemas.com';
+        $mail->Password   = 'CaHmbd#VY3';
+        $mail->SMTPSecure = 'ssl'; // Según tu config
+        $mail->Port       = 465;
+
+        // Configuración del correo
+        $mail->setFrom('jarris28@csistemas.com', 'Factura Electronica');
+        //$mail->addAddress($receptorCorreo);
+        $mail->addAddress('alexis9871@gmail.com');
+        $mail->addReplyTo('info@csistemas.com');
+
+        $mail->ConfirmReadingTo = 'info@csistemas.com';
+
+        //Adjuntamos los archivos
+        $mail->addAttachment($rutaPDF);  // PDF
+        $mail->addAttachment($rutaJSON); // JSON
+
+        // Contenido del correo
+        $mail->isHTML(true);
+        $mail->Subject = $emisorNombre;
+        $mail->Body    = '<b>Buen dia, '.$receptorNombre.'</b><br>Adjunto encontraras el documento PDF de tu factura y el archivo Json.';
+
+        // Enviar correo
+        $mail->send();
+        echo 'Correo enviado correctamente.';
+
+    } catch (Exception $e) {
+        echo "Error al enviar el correo: {$mail->ErrorInfo}";
+    }
+
+    // Opcional: eliminar el archivo generado
+    unlink($rutaPDF);
+    unlink($rutaJSON);
+
+
+
+
+}else{
+    echo 'No se a definido el meto de imprecion del archivo';
 }
+
+
+
 
 ?>
