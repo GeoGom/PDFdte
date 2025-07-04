@@ -1,9 +1,15 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
+
+$dataJsonPost = json_decode(file_get_contents("php://input"), true);
+
 include 'phpFunctions.php';
 
-
-//$json = $_POST['']; recibe el json 
-//$print = $_POST['']; recibe el modo en que se debe mostrar 1 (vista en panatalla)  2 (descarga)
+//$json = $dataJsonPost[""]; recibe el json 
+//$print = $dataJsonPost[""]; recibe el modo en que se debe mostrar 1 (vista en panatalla)  2 (descarga)
 $print = 1;
 $json = '		{
  		  "identificacion": {
