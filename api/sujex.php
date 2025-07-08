@@ -1,12 +1,5 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
-
-$dataJsonPost = json_decode(file_get_contents("php://input"), true);
-
 include 'phpFunctions.php';
 
 require_once __DIR__ . '/PHPMailer-Master/src/PHPMailer.php';
@@ -16,104 +9,9 @@ require_once __DIR__ . '/PHPMailer-Master/src/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//$json = $dataJsonPost[""]; recibe el json 
-//$print = $dataJsonPost[""]; recibe el modo en que se debe mostrar 1 (vista en panatalla)  2 (descarga)
-$print = 3;
-$json = '				{
-				  "identificacion": {
-				    "version": 1,
-				    "ambiente": "00",
-				    "tipoDte": "14",
-				    "numeroControl": "DTE-14-M001P001-000000000000024",
-				    "codigoGeneracion": "B8AA71E2-55C4-11F0-A13D-00E04C680750",
-				    "tipoModelo": 1,
-				    "tipoOperacion": 1,
-				    "tipoContingencia": null,
-				    "motivoContin": null,
-				    "fecEmi": "2025-06-30",
-				    "horEmi": "09:44:28",
-				    "tipoMoneda": "USD"
-				  },
-				  "emisor": {
-				    "nit": "11062412871011",
-				    "nrc": "2181594",
-				    "nombre": "MARVIN JOEL BONILLA GOMEZ",
-				    "codActividad": "46484",
-				    "descActividad": "Venta de productos farmac�uticos y medicinales",
-				    "direccion": {
-				      "departamento": "11",
-				      "municipio": "25",
-				      "complemento": "Calle Grimaldy, local B #31, Usulut�n, Usulut�n."
-				    },
-				    "telefono": "78736017",
-				    "codEstableMH": null,
-				    "codEstable": null,
-				    "codPuntoVentaMH": null,
-				    "codPuntoVenta": null,
-				    "correo": "novedadesbendy87@gmail.com"
-				  },
-				  "sujetoExcluido": {
-					"tipoDocumento": "36",
-				    "numDocumento":	"123456789",
-				    "nombre": "JUAN PEREZ",
-				    "codActividad": null,
-				    "descActividad": null,
-				    "direccion": {
-				      "departamento": "11",
-				      "municipio": "25",
-				      "complemento": "SIN DIRECCION"
-				    },
-				    "telefono": null,
-				    "correo": null
-				  },
-				  "cuerpoDocumento": [
-									    {
-				      "numItem": 1,
-					  "tipoItem": 3,
-				      "cantidad": 1.00,
-				      "codigo": "798302167537",
-				      "uniMedida": 59,
-				      "descripcion": "MOUSE XTECH XTM185 USB",
-				      "precioUni": 100.00000000,
-				      "montoDescu": 0.0,
-				      "compra": 100.00000000
-				    }
-				  ],
-				  "resumen": {
-				    "totalCompra": 100.00,
-				    "descu": 0.00,
-				    "totalDescu": 0.00,
-				    "subTotal": 100.00,
-				    "ivaRete1": 0.00,
-				    "reteRenta": 0.00,
-				    "totalPagar": 100.00,
-				    "totalLetras": "Cien  CON 00/100 USD",
-				    "condicionOperacion": 1,
-				    "pagos": null,
-				    "observaciones": null
-				  },
-				  "apendice": null
-				,
-"estado": "PROCESADO",
-"selloRecibido": "20259E11C3434E534EFFB27A2A2C549B7C7ANFG1",
-"fhProcesamiento": "30/06/2025 09:44:45",
-"firma": "eyJhbGciOiJSUzUxMiJ9.ewogICJpZGVudGlmaWNhY2lvbiIgOiB7CiAgICAidmVyc2lvbiIgOiAxLAogICAgImFtYmllbnRlIiA6ICIwMCIsCiAgICAidGlwb0R0ZSIgOiAiMTQiLAogICAgIm51bWVyb0NvbnRyb2wiIDogIkRURS0xNC1NMDAxUDAwMS0wMDAwMDAwMDAwMDAwMjQiLAogICAgImNvZGlnb0dlbmVyYWNpb24iIDogIkI4QUE3MUUyLTU1QzQtMTFGMC1BMTNELTAwRTA0QzY4MDc1MCIsCiAgICAidGlwb01vZGVsbyIgOiAxLAogICAgInRpcG9PcGVyYWNpb24iIDogMSwKICAgICJ0aXBvQ29udGluZ2VuY2lhIiA6IG51bGwsCiAgICAibW90aXZvQ29udGluIiA6IG51bGwsCiAgICAiZmVjRW1pIiA6ICIyMDI1LTA2LTMwIiwKICAgICJob3JFbWkiIDogIjA5OjQ0OjI4IiwKICAgICJ0aXBvTW9uZWRhIiA6ICJVU0QiCiAgfSwKICAiZW1pc29yIiA6IHsKICAgICJuaXQiIDogIjExMDYyNDEyODcxMDExIiwKICAgICJucmMiIDogIjIxODE1OTQiLAogICAgIm5vbWJyZSIgOiAiTUFSVklOIEpPRUwgQk9OSUxMQSBHT01FWiIsCiAgICAiY29kQWN0aXZpZGFkIiA6ICI0NjQ4NCIsCiAgICAiZGVzY0FjdGl2aWRhZCIgOiAiVmVudGEgZGUgcHJvZHVjdG9zIGZhcm1hY8OpdXRpY29zIHkgbWVkaWNpbmFsZXMiLAogICAgImRpcmVjY2lvbiIgOiB7CiAgICAgICJkZXBhcnRhbWVudG8iIDogIjExIiwKICAgICAgIm11bmljaXBpbyIgOiAiMjUiLAogICAgICAiY29tcGxlbWVudG8iIDogIkNhbGxlIEdyaW1hbGR5LCBsb2NhbCBCICMzMSwgVXN1bHV0w6FuLCBVc3VsdXTDoW4uIgogICAgfSwKICAgICJ0ZWxlZm9ubyIgOiAiNzg3MzYwMTciLAogICAgImNvZEVzdGFibGVNSCIgOiBudWxsLAogICAgImNvZEVzdGFibGUiIDogbnVsbCwKICAgICJjb2RQdW50b1ZlbnRhTUgiIDogbnVsbCwKICAgICJjb2RQdW50b1ZlbnRhIiA6IG51bGwsCiAgICAiY29ycmVvIiA6ICJub3ZlZGFkZXNiZW5keTg3QGdtYWlsLmNvbSIKICB9LAogICJzdWpldG9FeGNsdWlkbyIgOiB7CiAgICAidGlwb0RvY3VtZW50byIgOiAiMzYiLAogICAgIm51bURvY3VtZW50byIgOiAiMTIzNDU2Nzg5IiwKICAgICJub21icmUiIDogIkpVQU4gUEVSRVoiLAogICAgImNvZEFjdGl2aWRhZCIgOiBudWxsLAogICAgImRlc2NBY3RpdmlkYWQiIDogbnVsbCwKICAgICJkaXJlY2Npb24iIDogewogICAgICAiZGVwYXJ0YW1lbnRvIiA6ICIxMSIsCiAgICAgICJtdW5pY2lwaW8iIDogIjI1IiwKICAgICAgImNvbXBsZW1lbnRvIiA6ICJTSU4gRElSRUNDSU9OIgogICAgfSwKICAgICJ0ZWxlZm9ubyIgOiBudWxsLAogICAgImNvcnJlbyIgOiBudWxsCiAgfSwKICAiY3VlcnBvRG9jdW1lbnRvIiA6IFsgewogICAgIm51bUl0ZW0iIDogMSwKICAgICJ0aXBvSXRlbSIgOiAzLAogICAgImNhbnRpZGFkIiA6IDEuMCwKICAgICJjb2RpZ28iIDogIjc5ODMwMjE2NzUzNyIsCiAgICAidW5pTWVkaWRhIiA6IDU5LAogICAgImRlc2NyaXBjaW9uIiA6ICJNT1VTRSBYVEVDSCBYVE0xODUgVVNCIiwKICAgICJwcmVjaW9VbmkiIDogMTAwLjAsCiAgICAibW9udG9EZXNjdSIgOiAwLjAsCiAgICAiY29tcHJhIiA6IDEwMC4wCiAgfSBdLAogICJyZXN1bWVuIiA6IHsKICAgICJ0b3RhbENvbXByYSIgOiAxMDAuMCwKICAgICJkZXNjdSIgOiAwLjAsCiAgICAidG90YWxEZXNjdSIgOiAwLjAsCiAgICAic3ViVG90YWwiIDogMTAwLjAsCiAgICAiaXZhUmV0ZTEiIDogMC4wLAogICAgInJldGVSZW50YSIgOiAwLjAsCiAgICAidG90YWxQYWdhciIgOiAxMDAuMCwKICAgICJ0b3RhbExldHJhcyIgOiAiQ2llbiAgQ09OIDAwLzEwMCBVU0QiLAogICAgImNvbmRpY2lvbk9wZXJhY2lvbiIgOiAxLAogICAgInBhZ29zIiA6IG51bGwsCiAgICAib2JzZXJ2YWNpb25lcyIgOiBudWxsCiAgfSwKICAiYXBlbmRpY2UiIDogbnVsbAp9.wPVWkVfKpcwt6DWSvG5NCnxszqnHwYZKDMVbsD2-HeumEhAg4eIHR50u-ccFH0w97Z4Wr_ocRuYL18qawn8_PlhxGrCwneQ4vo96IUKzMfIvavND0VMAWqRle652Ki15SYv8W__nkHsclUmjOLFJNYTrW5Dg4ShAvbkx7AP7lVeBolfoy1Az0zd8adSgh7RYCC02tdV0FwPyVD_44MYxDN7QNyymgWIA6Xulyqrh-g9MLezg9Sc8MW39Ch0Z6huZVEq9FeVn3wcEVbxryzCxWcuJALd87J3VdtLhpD6F7eNjQ7n4bmMibr5Ws5-JOFbGH-EupgHOGhYKrB-27arg7Q"
-}';
-
-
-$json = preg_replace('/"observaciones"\s*:\s*,/', '"observaciones": null,', $json);
-$data = json_decode($json, true);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo "Error al decodificar JSON: " . json_last_error_msg();
-    exit;
-}
-
 
 // Identificación
 $version         = $data['identificacion']['version'];          // Ejemplo: 1
-$ambiente        = $data['identificacion']['ambiente'];         // Ejemplo: "01"
-$tipoDte         = $data['identificacion']['tipoDte'];          // Ejemplo: "01"
 $numeroControl   = $data['identificacion']['numeroControl'];    // Ejemplo: "DTE-01-S001P002-..."
 $codigoGeneracion= $data['identificacion']['codigoGeneracion']; // Ejemplo: "2115B283-4E18-11F0-..."
 $tipoModelo      = $data['identificacion']['tipoModelo'];       // Ejemplo: 1
