@@ -15,9 +15,10 @@ require_once __DIR__ . '/PHPMailer-Master/src/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//$json = $dataJsonPost[""]; recibe el json 
-//$print = $dataJsonPost[""]; recibe el modo en que se debe mostrar 1 (vista en panatalla)  2 (descarga)
-$print = 3;
+//$json = $dataJsonPost["datos"]; //recibe el json 
+//$print = $dataJsonPost["proceso"]; //recibe el modo en que se debe mostrar 1 (vista en panatalla)  2 (descarga)
+$print = 1;
+
 $json = '		{
  		  "identificacion": {
  		    "version": 1,
