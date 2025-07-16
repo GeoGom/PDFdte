@@ -24,8 +24,18 @@ $motivoContin    = $data['identificacion']['motivoContin'];     // Puede ser nul
 $fecEmi          = $data['identificacion']['fecEmi'];           // Ejemplo: "2025-06-20"
 $horEmi          = $data['identificacion']['horEmi'];           // Ejemplo: "14:50:01"
 $tipoMoneda      = $data['identificacion']['tipoMoneda'];       // Ejemplo: "USD"
+if(!isset($data['selloRecibido'])){
+	$data['selloRecibido'] = "";
+	$tipoModelo = 2;
+}
 $selloRecibido   = $data['selloRecibido'];
+if(!isset($data['estado'])){
+	$data['estado'] = "";
+}
 $estado          = $data['estado'];
+if(!isset($data['fhProcesamiento'])){
+	$data['fhProcesamiento'] = "";
+}
 $fechaTransmision = $data['fhProcesamiento'];
 
 
@@ -60,8 +70,12 @@ $codActividadReceptor = $data['receptor']['codActividad'];
 $descActividadReceptor = $data['receptor']['descActividad'];
 $direccion_recept_complemento       = $data['receptor']['direccion']['complemento'];
 //$direccionReceptor = $data['receptor']['direccion']; er un array
-$direccionArray = $data['receptor']['direccion'];
-$direccionReceptor = implode(', ', $direccionArray);
+if(!isset($data['receptor']['direccion'])){
+	$data['receptor']['direccion'] = null;
+}else{
+	$direccionArray = $data['receptor']['direccion'];
+	$direccionReceptor = implode(', ', $direccionArray);
+}
 $telefonoReceptor  = $data['receptor']['telefono'];
 $correoReceptor    = $data['receptor']['correo'];
 
@@ -175,7 +189,7 @@ $pdf->Cell(0, 3, $tipoModelo , 0, 1, 'L');//contenido de la celda
 */
 $pdf->SetXY($x_documento2, 43); //posicion de la celda
 $pdf->SetFont('helvetica', 'B', $titulo2); //formato de la celda
-$pdf->Cell(0, 3, 'PREVIO' , 0, 1, 'L');//contenido de la celda 
+$pdf->Cell(0, 3, ($tipoModelo == 1 ? 'Previo' : 'Diferido') , 0, 1, 'L');//contenido de la celda 
 /*
 $pdf->SetXY($x_documento2, 46); //posicion de la celda
 $pdf->SetFont('helvetica', '', $texto); //formato de la celda

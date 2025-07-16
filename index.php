@@ -9,8 +9,9 @@ $dataJsonPost = json_decode(file_get_contents("php://input"), true);
 $json = $dataJsonPost["datos"]; 
 $print = $dataJsonPost["proceso"]; 
 
-$json = preg_replace('/"observaciones"\s*:\s*,/', '"observaciones": null,', $json);
-$data = json_decode($json, true);
+//$json = preg_replace('/"observaciones"\s*:\s*,/', '"observaciones": null,', $json);
+//$data = json_decode($json, true);
+$data = $json;
 
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo "Error al decodificar JSON: " . json_last_error_msg();
