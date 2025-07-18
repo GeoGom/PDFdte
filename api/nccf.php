@@ -68,7 +68,7 @@ $cuerpoDocumento = $data['cuerpoDocumento'];
 
 
 
-$QR_data = "https://admin.factura.gob.sv/consultaPublica?ambiente=01&codGen=".$codigoGeneracion."&fechaEmi=".$fecEmi;
+$QR_data = "https://admin.factura.gob.sv/consultaPublica?ambiente=".$ambiente."&codGen=".$codigoGeneracion."&fechaEmi=".$fecEmi;
 
 
 

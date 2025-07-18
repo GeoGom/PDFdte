@@ -18,8 +18,8 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-$ambiente        = $data['identificacion']['ambiente'];         
-$tipoDte         = $data['identificacion']['tipoDte'];   
+$ambiente        = $data['identificacion']['ambiente'] ?? '';         
+$tipoDte         = $data['identificacion']['tipoDte'] ?? '';   
 
 switch ($tipoDte) {
     case '01':
