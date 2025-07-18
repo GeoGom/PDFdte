@@ -14,16 +14,16 @@ use PHPMailer\PHPMailer\Exception;
 
 
 //IDENTIFICACION 
-$version         = $data['identificacion']['version'];          // Ejemplo: 1
-$numeroControl   = $data['identificacion']['numeroControl'];    // Ejemplo: "DTE-01-S001P002-..."
-$codigoGeneracion= $data['identificacion']['codigoGeneracion']; // Ejemplo: "2115B283-4E18-11F0-..."
-$tipoModelo      = $data['identificacion']['tipoModelo'];       // Ejemplo: 1
-$tipoOperacion   = $data['identificacion']['tipoOperacion'];    // Ejemplo: 1
-$tipoContingencia= $data['identificacion']['tipoContingencia']; // Puede ser null
-$motivoContin    = $data['identificacion']['motivoContin'];     // Puede ser null
-$fecEmi          = $data['identificacion']['fecEmi'];           // Ejemplo: "2025-06-20"
-$horEmi          = $data['identificacion']['horEmi'];           // Ejemplo: "14:50:01"
-$tipoMoneda      = $data['identificacion']['tipoMoneda'];       // Ejemplo: "USD"
+$version         = $data['identificacion']['version'] ?? '';          // Ejemplo: 1
+$numeroControl   = $data['identificacion']['numeroControl'] ?? '';    // Ejemplo: "DTE-01-S001P002-..."
+$codigoGeneracion= $data['identificacion']['codigoGeneracion'] ?? ''; // Ejemplo: "2115B283-4E18-11F0-..."
+$tipoModelo      = $data['identificacion']['tipoModelo'] ?? '';       // Ejemplo: 1
+$tipoOperacion   = $data['identificacion']['tipoOperacion'] ?? '';    // Ejemplo: 1
+$tipoContingencia= $data['identificacion']['tipoContingencia'] ?? ''; // Puede ser null
+$motivoContin    = $data['identificacion']['motivoContin'] ?? '';     // Puede ser null
+$fecEmi          = $data['identificacion']['fecEmi'] ?? '';           // Ejemplo: "2025-06-20"
+$horEmi          = $data['identificacion']['horEmi'] ?? '';           // Ejemplo: "14:50:01"
+$tipoMoneda      = $data['identificacion']['tipoMoneda'] ?? '';       // Ejemplo: "USD"
 if(!isset($data['selloRecibido'])){
 	$data['selloRecibido'] = "";
 	$tipoModelo = 2;
@@ -36,48 +36,55 @@ $estado          = $data['estado'];
 if(!isset($data['fhProcesamiento'])){
 	$data['fhProcesamiento'] = "";
 }
-$fechaTransmision = $data['fhProcesamiento'];
+$fechaTransmision = $data['fhProcesamiento'] ?? '';
 
 
 //EMISOR
-$nit               = $data['emisor']['nit'];
-$nrc               = $data['emisor']['nrc'];
-$nombre            = $data['emisor']['nombre'];
-$codActividad      = $data['emisor']['codActividad'];
-$descActividad     = $data['emisor']['descActividad'];
-$nombreComercial   = $data['emisor']['nombreComercial'];
-$tipoEstablecimiento = $data['emisor']['tipoEstablecimiento'];
+$nit               = $data['emisor']['nit'] ?? '';
+$nrc               = $data['emisor']['nrc'] ?? '';
+$nombre            = $data['emisor']['nombre'] ?? '';
+$codActividad      = $data['emisor']['codActividad'] ?? '';
+$descActividad     = $data['emisor']['descActividad'] ?? '';
+$nombreComercial   = $data['emisor']['nombreComercial'] ?? '';
+$tipoEstablecimiento = $data['emisor']['tipoEstablecimiento'] ?? '';
 
 // Dirección dentro de emisor
-$departamento      = $data['emisor']['direccion']['departamento'];
-$municipio         = $data['emisor']['direccion']['municipio'];
-$complemento       = $data['emisor']['direccion']['complemento'];
+$departamento      = $data['emisor']['direccion']['departamento'] ?? '';
+$municipio         = $data['emisor']['direccion']['municipio'] ?? '';
+$complemento       = $data['emisor']['direccion']['complemento'] ?? '';
 
-$telefono          = $data['emisor']['telefono'];
-$correo            = $data['emisor']['correo'];
-$codEstableMH      = $data['emisor']['codEstableMH'];
-$codEstable        = $data['emisor']['codEstable'];
-$codPuntoVentaMH   = $data['emisor']['codPuntoVentaMH'];
-$codPuntoVenta     = $data['emisor']['codPuntoVenta'];
+$telefono          = $data['emisor']['telefono'] ?? '';
+$correo            = $data['emisor']['correo'] ?? '';
+$codEstableMH      = $data['emisor']['codEstableMH'] ?? '';
+$codEstable        = $data['emisor']['codEstable'] ?? '';
+$codPuntoVentaMH   = $data['emisor']['codPuntoVentaMH'] ?? '';
+$codPuntoVenta     = $data['emisor']['codPuntoVenta'] ?? '';
 
 
 //RECEPTOR
-$tipoDocumento     = $data['receptor']['tipoDocumento'];
-$numDocumento      = $data['receptor']['numDocumento'];
-$nrcReceptor       = $data['receptor']['nrc'];
-$nombreReceptor    = $data['receptor']['nombre'];
-$codActividadReceptor = $data['receptor']['codActividad'];
-$descActividadReceptor = $data['receptor']['descActividad'];
-$direccion_recept_complemento       = $data['receptor']['direccion']['complemento'];
+$tipoDocumento     = $data['receptor']['tipoDocumento'] ?? '';
+$numDocumento      = $data['receptor']['numDocumento'] ?? '';
+$nrcReceptor       = $data['receptor']['nrc'] ?? '';
+$nombreReceptor    = $data['receptor']['nombre'] ?? '';
+$codActividadReceptor = $data['receptor']['codActividad'] ?? '';
+$descActividadReceptor = $data['receptor']['descActividad'] ?? '';
+//$direccion_recept_complemento       = $data['receptor']['direccion']['complemento'];
 //$direccionReceptor = $data['receptor']['direccion']; er un array
+/*
 if(!isset($data['receptor']['direccion'])){
 	$data['receptor']['direccion'] = null;
 }else{
 	$direccionArray = $data['receptor']['direccion'];
 	$direccionReceptor = implode(', ', $direccionArray);
 }
-$telefonoReceptor  = $data['receptor']['telefono'];
-$correoReceptor    = $data['receptor']['correo'];
+    */
+if (isset($data['receptor']['direccion']) && is_array($data['receptor']['direccion'])) {
+    $direccion_recept_complemento  = $data['receptor']['direccion']['complemento'] ?? '';
+} else {
+    $direccion_recept_complemento = '';
+}
+$telefonoReceptor  = $data['receptor']['telefono'] ?? '';
+$correoReceptor    = $data['receptor']['correo'] ?? '';
 
 
 
@@ -393,22 +400,22 @@ $max_y = $pdf->GetPageHeight();
 
 foreach ($cuerpoDocumento as $rowP) {
   $numeroDocumento = $rowP['numeroDocumento'];  // puede ser null
-  $numItem        = $rowP['numItem'];
-  $tipoItem       = $rowP['tipoItem'];
-  $cantidad       = $rowP['cantidad'];
-  $codigo         = $rowP['codigo'];
-  $uniMedida      = $rowP['uniMedida'];
-  $descripcion    = $rowP['descripcion'];
-  $precioUni      = $rowP['precioUni'];
-  $montoDescu     = $rowP['montoDescu'];
-  $ventaNoSuj     = $rowP['ventaNoSuj'];
-  $ventaExenta    = $rowP['ventaExenta'];
-  $ventaGravada   = $rowP['ventaGravada'];
-  $noGravado      = $rowP['noGravado'];
-  $codTributo     = $rowP['codTributo'];   // puede ser null
-  $tributos       = $rowP['tributos'];     // puede ser null
-  $ivaItem        = $rowP['ivaItem'];
-  $psv            = $rowP['psv'];
+  $numItem        = $rowP['numItem'] ?? '';
+  $tipoItem       = $rowP['tipoItem'] ?? '';
+  $cantidad       = $rowP['cantidad'] ?? '';
+  $codigo         = $rowP['codigo'] ?? '';
+  $uniMedida      = $rowP['uniMedida'] ?? '';
+  $descripcion    = $rowP['descripcion'] ?? '';
+  $precioUni      = $rowP['precioUni'] ?? '';
+  $montoDescu     = $rowP['montoDescu'] ?? '';
+  $ventaNoSuj     = $rowP['ventaNoSuj'] ?? '';
+  $ventaExenta    = $rowP['ventaExenta'] ?? '';
+  $ventaGravada   = $rowP['ventaGravada'] ?? '';
+  $noGravado      = $rowP['noGravado'] ?? '';
+  $codTributo     = $rowP['codTributo'] ?? '';   // puede ser null
+  $tributos       = $rowP['tributos'] ?? '';     // puede ser null
+  $ivaItem        = $rowP['ivaItem'] ?? '';
+  $psv            = $rowP['psv'] ?? '';
 
   if ($pdf->GetY() >= $max_y -60) { // Ajusta este valor según tus necesidades
 
@@ -745,32 +752,32 @@ foreach ($cuerpoDocumento as $rowP) {
 
 $resumen = $data['resumen'];
 
-$totalNoSuj = $resumen['totalNoSuj'];            // Total de operaciones no sujetas
-$totalExenta = $resumen['totalExenta'];          // Total de ventas exentas
-$totalGravada = $resumen['totalGravada'];        // Total de ventas gravadas
-$subTotalVentas = $resumen['subTotalVentas'];    // Suma total antes de descuentos
-$descuNoSuj = $resumen['descuNoSuj'];            // Descuento aplicado a ventas no sujetas
-$descuExenta = $resumen['descuExenta'];          // Descuento en ventas exentas
-$descuGravada = $resumen['descuGravada'];        // Descuento en ventas gravadas
-$porcentajeDescuento = $resumen['porcentajeDescuento'];  // % global de descuento aplicado
-$totalDescu = $resumen['totalDescu'];            // Total general de descuentos
+$totalNoSuj = $resumen['totalNoSuj'] ?? '';            // Total de operaciones no sujetas
+$totalExenta = $resumen['totalExenta'] ?? '';          // Total de ventas exentas
+$totalGravada = $resumen['totalGravada'] ?? '';        // Total de ventas gravadas
+$subTotalVentas = $resumen['subTotalVentas'] ?? '';    // Suma total antes de descuentos
+$descuNoSuj = $resumen['descuNoSuj'] ?? '';            // Descuento aplicado a ventas no sujetas
+$descuExenta = $resumen['descuExenta'] ?? '';          // Descuento en ventas exentas
+$descuGravada = $resumen['descuGravada'] ?? '';        // Descuento en ventas gravadas
+$porcentajeDescuento = $resumen['porcentajeDescuento'] ?? '';  // % global de descuento aplicado
+$totalDescu = $resumen['totalDescu'] ?? '';            // Total general de descuentos
 
-$totalIva = $resumen['totalIva'];                // IVA total calculado
-$subTotal = $resumen['subTotal'];                // Subtotal después de descuentos
-$ivaRete1 = $resumen['ivaRete1'];                // IVA retenido (si aplica)
-$reteRenta = $resumen['reteRenta'];              // Retención de renta (si aplica)
-$montoTotalOperacion = $resumen['montoTotalOperacion'];  // Monto total de la operación
-$totalNoGravado = $resumen['totalNoGravado'];    // Total de montos no gravados
-$totalPagar = $resumen['totalPagar'];            // Monto total a pagar por el cliente
-$totalLetras = $resumen['totalLetras'];          // Monto total en letras
-$saldoFavor = $resumen['saldoFavor'];            // Saldo a favor del cliente (si aplica)
-$condicionOperacion = $resumen['condicionOperacion']; // Condición de operación (ej. contado o crédito)
-$pagos = $resumen['pagos'];                      // Detalles de pagos (puede ser null)
-$numPagoElectronico = $resumen['numPagoElectronico']; // Número de pago electrónico (si aplica)
+$totalIva = $resumen['totalIva'] ?? '';                // IVA total calculado
+$subTotal = $resumen['subTotal'] ?? '';                // Subtotal después de descuentos
+$ivaRete1 = $resumen['ivaRete1'] ?? '';                // IVA retenido (si aplica)
+$reteRenta = $resumen['reteRenta'] ?? '';              // Retención de renta (si aplica)
+$montoTotalOperacion = $resumen['montoTotalOperacion'] ?? '';  // Monto total de la operación
+$totalNoGravado = $resumen['totalNoGravado'] ?? '';    // Total de montos no gravados
+$totalPagar = $resumen['totalPagar'] ?? '';            // Monto total a pagar por el cliente
+$totalLetras = $resumen['totalLetras'] ?? '';          // Monto total en letras
+$saldoFavor = $resumen['saldoFavor'] ?? '';            // Saldo a favor del cliente (si aplica)
+$condicionOperacion = $resumen['condicionOperacion'] ?? ''; // Condición de operación (ej. contado o crédito)
+$pagos = $resumen['pagos'] ?? '';                      // Detalles de pagos (puede ser null)
+$numPagoElectronico = $resumen['numPagoElectronico'] ?? ''; // Número de pago electrónico (si aplica)
 
-$nombEntrega = $data['extension']['nombEntrega'];
-$nombRecibe = $data['extension']['nombRecibe'];
-$observaciones_extension = $data['extension']['observaciones'];
+$nombEntrega = $data['extension']['nombEntrega'] ?? '';
+$nombRecibe = $data['extension']['nombRecibe'] ?? '';
+$observaciones_extension = $data['extension']['observaciones'] ?? '';
 
 $y_detalle = $max_y - 60;
 // Imprimir una línea divisoria
@@ -838,9 +845,9 @@ if (!is_null($resumen['tributos'])) {
 		$tributos = $resumen['tributos'];
 	foreach ($tributos as $index => $tributo) {
 
-		$tributo_codigo = $tributo['codigo'];
-		$tributos_descrip = $tributo['descripcion'];
-		$tributos_val = $tributo['valor'];
+		$tributo_codigo = $tributo['codigo'] ?? '';
+		$tributos_descrip = $tributo['descripcion'] ?? '';
+		$tributos_val = $tributo['valor'] ?? '';
 
 		$pdf->SetXY( 148, $y_detalle); //posicion de la celda
 		$pdf->SetFont('helvetica', '', $texto); //formato de la celda
